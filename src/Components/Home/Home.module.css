@@ -1,0 +1,16 @@
+.featureCard{
+    transition: all 0.3s;
+}
+
+.featureCard:hover{
+    transform: scale(1.1);
+    box-shadow: 6px 5px 20px 3px #272727;
+}
+
+.featureIcon{
+    transition: all 0.3s;
+}
+.featureCard:hover .featureIcon{
+    background-color: #868686 !important;
+}
+
