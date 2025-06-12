@@ -13,7 +13,6 @@ let validateScheme = yub.object({
   lastName: yub.string().min(3 , "name minimum length is 3").max(10 , "name maximum length is 10").required("name is required"),
   email: yub.string().email("email is invalid").required("email is required"),
   password: yub.string().required("password is required"),
-//   .matches(/^[A-Z][a-z0-9]{7,100}$/, "Password must be at least 8 characters long and include uppercase, lowercase, number, and special character")
 })
 
 export default function Register() {
@@ -76,7 +75,7 @@ export default function Register() {
     <label htmlFor="passwordf">password :</label>
     <input id='passwordf' className='form-control mb-3' type="password" name='password' value={formik.values.password} onChange={formik.handleChange} onBlur={formik.handleBlur} />
     {formik.errors.password && formik.touched.password ? <div className='alert alert-danger py-2 my-2 text-danger py-3'>{formik.errors.password}</div>: ''}
-    {isloading?<button className='btn btn-info my-3 fs-4 float-end mb-5' type='submit'>
+    {isloading?<button className='btn btn-success w-100 my-3 fs-4 float-end mb-5' type='submit'>
   <SyncLoader color="#ffffff"/>
     </button>:<> { resMessage ? <p className="alert alert-warning"> {resMessage} </p> : "" }
     <button disabled = {!(formik.isValid && formik.dirty)} className='btn btn-outline-secondary fs-5 w-100' type='submit'>Sign up</button>

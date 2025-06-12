@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { UserContext } from '../../Context/UserContext.jsx';
+import React, { useContext, useState } from "react";
+import axios from "axios";
+import { UserContext } from "../../Context/UserContext.jsx";
 
 function ArtStyleTransfer() {
   const [contentImage, setContentImage] = useState(null);
@@ -9,12 +9,12 @@ function ArtStyleTransfer() {
   const [styleFile, setStyleFile] = useState(null);
   const [resultImage, setResultImage] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
-
+  let { userToken } = useContext(UserContext);
 
   const handleImageChange = (e, imageSetter, fileSetter) => {
     const file = e.target.files[0];
     if (file) {
-      imageSetter(URL.createObjectURL(file)); 
+      imageSetter(URL.createObjectURL(file));
       fileSetter(file);
     }
   };
@@ -25,18 +25,25 @@ function ArtStyleTransfer() {
     setIsProcessing(true);
 
     const formData = new FormData();
-    formData.append('ContentImage', contentFile);
-    formData.append('StyleImage', styleFile);
+    formData.append("ContentImage", contentFile);
+    formData.append("StyleImage", styleFile);
 
     try {
-      const response = await axios.post('https://image-g3epahfrhjghgpfs.switzerlandnorth-01.azurewebsites.net/api/Generation/stylize-image', formData, {
-        responseType: 'blob',
-      });
-
-      const resultUrl = URL.createObjectURL(response.data);
+      const response = await axios.post(
+        "https://image-g3epahfrhjghgpfs.switzerlandnorth-01.azurewebsites.net/api/Generation/stylize-image",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+          responseType: "json",
+        }
+      );
+      const base64Data = response.data.imageBase64;
+      const resultUrl = `data:image/png;base64,${base64Data}`;
       setResultImage(resultUrl);
     } catch (error) {
-      console.error('Error applying style:', error);
+      console.error("Error applying style:", error);
     } finally {
       setIsProcessing(false);
     }
@@ -44,7 +51,9 @@ function ArtStyleTransfer() {
 
   return (
     <div className="container py-5">
-      <h2 className="text-center mb-4 text-white fw-bold">Art Style Transfer</h2>
+      <h2 className="text-center mb-4 text-white fw-bold">
+        Art Style Transfer
+      </h2>
       <div className="row g-4">
         <div className="col-md-4">
           <div className="card text-center h-100">
@@ -54,10 +63,16 @@ function ArtStyleTransfer() {
                 type="file"
                 accept="image/*"
                 className="form-control"
-                onChange={(e) => handleImageChange(e, setContentImage, setContentFile)}
+                onChange={(e) =>
+                  handleImageChange(e, setContentImage, setContentFile)
+                }
               />
               {contentImage && (
-                <img src={contentImage} alt="content" className="img-fluid mt-3 rounded" />
+                <img
+                  src={contentImage}
+                  alt="content"
+                  className="img-fluid mt-3 rounded"
+                />
               )}
             </div>
           </div>
@@ -71,10 +86,16 @@ function ArtStyleTransfer() {
                 type="file"
                 accept="image/*"
                 className="form-control"
-                onChange={(e) => handleImageChange(e, setStyleImage, setStyleFile)}
+                onChange={(e) =>
+                  handleImageChange(e, setStyleImage, setStyleFile)
+                }
               />
               {styleImage && (
-                <img src={styleImage} alt="style" className="img-fluid mt-3 rounded" />
+                <img
+                  src={styleImage}
+                  alt="style"
+                  className="img-fluid mt-3 rounded"
+                />
               )}
               {contentImage && styleImage && (
                 <button
@@ -82,7 +103,7 @@ function ArtStyleTransfer() {
                   onClick={handleApplyStyle}
                   disabled={isProcessing}
                 >
-                  {isProcessing ? 'Applying Style...' : 'Apply Style'}
+                  {isProcessing ? "Applying Style..." : "Apply Style"}
                 </button>
               )}
             </div>
@@ -94,15 +115,19 @@ function ArtStyleTransfer() {
             <div className="card-header">Result Image</div>
             <div className="card-body">
               {resultImage ? (
-                <img src={resultImage} alt="result" className="img-fluid rounded" />
+                <img
+                  src={resultImage}
+                  alt="result"
+                  className="img-fluid rounded"
+                />
               ) : (
                 <div className="text-muted">
                   {contentImage && styleImage
                     ? 'Click "Apply Style" to generate result'
-                    : 'Upload both images to see the result'}
+                    : "Upload both images to see the result"}
                 </div>
               )}
-              <div className="mt-3" style={{ minHeight: '200px' }} />
+              <div className="mt-3" style={{ minHeight: "200px" }} />
             </div>
           </div>
         </div>
