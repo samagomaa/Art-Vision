@@ -25,6 +25,9 @@ function useQuery() {
 
 
 export default function ResetPassword() {
+  const query = useQuery();
+const token = query.get("token");
+const email = query.get("email");
   let navigate = useNavigate()
   let [isLoading, setIsLoading] = useState(false);
   let [resMessage, setResMessage] = useState("");
