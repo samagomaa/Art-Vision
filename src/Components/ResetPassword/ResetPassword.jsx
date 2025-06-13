@@ -4,9 +4,10 @@ import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { SyncLoader } from "react-spinners";
 import * as yub from "yup";
+import { useLocation } from "react-router-dom";
+
 
 let validateScheme = yub.object({
-  email: yub.string().required("Email is required").email("enter valid email"),
   newPassword: yub.string().required("Password is required"),
   confirmPassword: yub
     .string()
@@ -16,13 +17,22 @@ let validateScheme = yub.object({
     )
     .required("Confirm password is required"),
 });
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
+ 
+
+
 export default function ResetPassword() {
+
+const query = useQuery();
+const token = query.get("token");
+const email = query.get("email");
   let [isLoading, setIsLoading] = useState(false);
   let [resMessage, setResMessage] = useState("");
 
   let formik = useFormik({
     initialValues: {
-      email: "",
       newPassword: "",
       confirmPassword: "",
     },
@@ -31,22 +41,28 @@ export default function ResetPassword() {
   });
 
   async function handleSubmit(value) {
-    setIsLoading(true);
-    let response = await axios
-      .post(
-        `https://image-g3epahfrhjghgpfs.switzerlandnorth-01.azurewebsites.net/api/User/reset-password`,
-        value
-      )
-      .catch((error) => {
-        setIsLoading(false);
-        console.log(error);
-      });
+  setIsLoading(true);
+  try {
+    const response = await axios.post(
+      `https://image-g3epahfrhjghgpfs.switzerlandnorth-01.azurewebsites.net/api/User/reset-password`,
+      {
+        email,
+        token,
+        newPassword: value.newPassword,
+        confirmPassword: value.confirmPassword,
+      }
+    );
     if (response?.data.status.code === 0) {
-      setIsLoading(false);
       setResMessage(response.data.status.message);
     }
-    console.log(response);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setIsLoading(false);
   }
+}
+
+
 
   return (
     <>
@@ -61,26 +77,7 @@ export default function ResetPassword() {
           <div className="my-3">
             <h4 className="text-white">Reset Your Password</h4>
           </div>
-          <label className="text-white fw-medium mb-2" htmlFor="emailInput">
-            Email :
-          </label>
-          <input
-            id="emailInput"
-            className="form-control mb-3"
-            type="email"
-            name="email"
-            value={formik.values.name}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            placeholder="name@example.com"
-          />
-          {formik.errors.email && formik.touched.email ? (
-            <div className="alert alert-danger py-2 my-2">
-              {formik.errors.email}
-            </div>
-          ) : (
-            ""
-          )}
+          
 
           <label className="text-white fw-medium mb-2" htmlFor="newPassword">
             newPassword :
