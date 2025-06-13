@@ -36,7 +36,6 @@ export default function Generate() {
           }
         );
         setdataAnalysis(data.data);
-        console.log(data.data.data);
       } catch (error) {
         console.error("Error uploading image:", error);
       }

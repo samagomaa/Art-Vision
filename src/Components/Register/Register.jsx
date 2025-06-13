@@ -39,7 +39,6 @@ export default function Register() {
         navigate("/login");
       }
     }
-     console.log("out",response);
   }
   
   let formik = useFormik({

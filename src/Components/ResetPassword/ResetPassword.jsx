@@ -2,6 +2,7 @@ import axios from "axios";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
+import { useNavigate } from "react-router-dom";
 import { SyncLoader } from "react-spinners";
 import * as yub from "yup";
 
@@ -17,6 +18,7 @@ let validateScheme = yub.object({
     .required("Confirm password is required"),
 });
 export default function ResetPassword() {
+  let navigate = useNavigate()
   let [isLoading, setIsLoading] = useState(false);
   let [resMessage, setResMessage] = useState("");
 
@@ -44,8 +46,8 @@ export default function ResetPassword() {
     if (response?.data.status.code === 0) {
       setIsLoading(false);
       setResMessage(response.data.status.message);
+      navigate("/");
     }
-    console.log(response);
   }
 
   return (
