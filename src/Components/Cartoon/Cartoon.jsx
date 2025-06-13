@@ -15,16 +15,17 @@ export default function Cartoon() {
 
     try {
       const response = await axios.post(
-        `https://image-g3epahfrhjghgpfs.switzerlandnorth-01.azurewebsites.net/api/Generation/generate-cartoon`,
+        `https://bambii-03-art-vision-cartoon-generator.hf.space/generate_cartoon`,
         { prompt },
         {
           headers: {
             Authorization: `Bearer ${userToken}`,
+            Accept: "application/json",
           },
         }
       );
 
-      const base64Image = response.data.imageBase64;
+      const base64Image = response.data.image_base64;
       const imageUrl = `data:image/png;base64,${base64Image}`;
       setGeneratedImage(imageUrl);
       console.log(response);
