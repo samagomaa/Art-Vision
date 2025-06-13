@@ -8,7 +8,6 @@ export default function History() {
   const [isloading, setisloading] = useState(false);
   let [result, setResult] = useState([]);
   let { userToken } = useContext(UserContext);
-  const [email, setEmail] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
@@ -21,7 +20,6 @@ export default function History() {
 
     let queryParams = [];
 
-    if (email) queryParams.push(`email=${email}`);
     if (startDate) queryParams.push(`startDate=${startDate}`);
     if (endDate) queryParams.push(`endDate=${endDate}`);
 
@@ -29,7 +27,7 @@ export default function History() {
 
     let response = await axios
       .get(
-        `https://image-g3epahfrhjghgpfs.switzerlandnorth-01.azurewebsites.net/api/History/image-history${queryString}`,
+        `https://image-g3epahfrhjghgpfs.switzerlandnorth-01.azurewebsites.net/api/History/user-history${queryString}`,
         {
           headers: {
             Authorization: `Bearer ${userToken}`,
@@ -43,6 +41,7 @@ export default function History() {
     if (response.data.status.code === 0) {
       setisloading(false);
       setResult(response?.data.data);
+      
     }
   }
 
@@ -72,19 +71,6 @@ export default function History() {
             <>
               <div className="col-md-12">
                 <form className="row g-4 w-75 mx-auto">
-                  <div className="col-auto">
-                    <label htmlFor="emailfilter" className="visually-hidden">
-                      example@gmail.com
-                    </label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      id="emailfilter"
-                      placeholder="example@gmail.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </div>
                   <div className="col-auto">
                     <label htmlFor="startDate" className="visually-hidden">
                       Start Date
