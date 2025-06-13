@@ -16,6 +16,8 @@ import { UserContext } from "./Context/UserContext.jsx";
 import ForgetPassword from "./Components/ForgetPassword/ForgetPassword.jsx";
 import ResetPassword from "./Components/ResetPassword/ResetPassword.jsx";
 import History from "./Components/History/History.jsx";
+import Cartoon from "./Components/Cartoon/Cartoon.jsx";
+import WaterColors from "./Components/WaterColors/WaterColors.jsx";
 
 let routers = createHashRouter([
   {
@@ -68,6 +70,22 @@ let routers = createHashRouter([
         element: (
           <ProtectedRoute>
             <Help />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "cartoon",
+        element: (
+          <ProtectedRoute>
+            <Cartoon />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "watercolor",
+        element: (
+          <ProtectedRoute>
+            <WaterColors />
           </ProtectedRoute>
         ),
       },

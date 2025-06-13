@@ -34,7 +34,6 @@ export default function Login() {
         navigate("/");
       }
     }
-    console.log("out", res);
   }
 
   let validateScheme = yub.object({

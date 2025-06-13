@@ -77,6 +77,28 @@ export default function Navbar() {
                       </li>
                     </ul>
                   </li>
+                  <li className="nav-item dropdown ">
+                    <Link
+                      className="nav-link dropdown-toggle text-white"
+                      role="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      Art Style
+                    </Link>
+                    <ul className="dropdown-menu bg-secondary-subtle">
+                      <li>
+                        <Link className="dropdown-item" to="cartoon">
+                          Cartoon
+                        </Link>
+                      </li>
+                      <li>
+                        <Link className="dropdown-item" to="watercolor">
+                          Water Color
+                        </Link>
+                      </li>
+                    </ul>
+                  </li>
                   <li className="nav-item">
                     <Link className="nav-link text-white" to="history">
                       History
