@@ -15,18 +15,20 @@ export default function WaterColors() {
 
     try {
       const response = await axios.post(
-        `https://image-g3epahfrhjghgpfs.switzerlandnorth-01.azurewebsites.net/api/Generation/generate-waterColor`,
+        `https://bambii-03-art-vision-watercolor-generation.hf.space/generate_watercolor`,
         { prompt },
         {
           headers: {
             Authorization: `Bearer ${userToken}`,
+            Accept: "application/json",
           },
         }
       );
 
-      const base64Image = response.data.imageBase64;
+      const base64Image = response.data.image_base64;
       const imageUrl = `data:image/png;base64,${base64Image}`;
       setGeneratedImage(imageUrl);
+      console.log(response);
     } catch (error) {
       console.error("Error generating image:", error);
       alert("An error occurred while generating the image.");
@@ -38,7 +40,7 @@ export default function WaterColors() {
   return (
     <div className="container py-5">
       <h2 className="text-center mb-4 text-white fw-bold">
-        Water Color Generator
+        Art Watercolor Generator
       </h2>
       <div className="mb-3">
         <input
