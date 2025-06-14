@@ -2,7 +2,9 @@ import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../../Context/UserContext.jsx";
 
+
 export default function Navbar() {
+  const isAdmin = localStorage.getItem("isAdmin") === "true";
   let { userToken, setUserToken } = useContext(UserContext);
   let navigate = useNavigate();
 
@@ -43,7 +45,7 @@ export default function Navbar() {
                   Home
                 </Link>
               </li>
-              {userToken ? (
+              {userToken && !isAdmin? (
                 <>
                   <li className="nav-item">
                     <Link className="nav-link text-white" to="styleswap">
@@ -118,7 +120,24 @@ export default function Navbar() {
                     </button>
                   </li>{" "}
                 </>
-              ) : (
+              ) : isAdmin? <>
+              <li className="nav-item">
+                    <Link
+                      className="nav-link text-white me-2"
+                      to="admin"
+                    >
+                      Admin Dashboard
+                    </Link>
+                  </li>
+                  <li className="nav-item">
+                    <button
+                      className="nav-link text-white fw-bold fa-lg ms-3"
+                      onClick={() => logOut()}
+                    >
+                      <i className="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                  </li>
+              </> :(
                 <>
                   <li className="nav-item">
                     <Link

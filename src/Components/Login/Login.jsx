@@ -3,7 +3,6 @@ import { useFormik } from "formik";
 import * as yub from "yup";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
-import { Helmet } from "react-helmet";
 import { UserContext } from "../../Context/UserContext.jsx";
 import { SyncLoader } from "react-spinners";
 
@@ -26,10 +25,19 @@ export default function Login() {
         navigate("*");
       });
     if (res.status === 200) {
+      console.log(res);
+      
       setisloading(false);
       localStorage.setItem("userToken", res.data.data);
       setUserToken(res.data.data);
       setresMessage(res.data.status.message);
+
+       if (values.email === "admin@gmail.com" && values.password === "P@$$w0rd") {
+      localStorage.setItem("isAdmin", "true");
+    } else {
+      localStorage.setItem("isAdmin", "false");
+    }
+
       if (res.data.status.code === 0) {
         navigate("/");
       }
@@ -52,9 +60,6 @@ export default function Login() {
 
   return (
     <>
-      <Helmet>
-        <title>Login</title>
-      </Helmet>
       <div className="vh-100 d-flex align-items-center justify-content-center py-5">
         <div className="d-flex flex-column justify-content-center bg-body-tertiary bg-opacity-75 w-75 p-4 rounded-4">
           <div className="d-flex justify-content-center pb-4 w-100">

@@ -18,6 +18,7 @@ import ResetPassword from "./Components/ResetPassword/ResetPassword.jsx";
 import History from "./Components/History/History.jsx";
 import Cartoon from "./Components/Cartoon/Cartoon.jsx";
 import WaterColors from "./Components/WaterColors/WaterColors.jsx";
+import Admin from "./Components/Admin/Admin.jsx";
 
 let routers = createHashRouter([
   {
@@ -86,6 +87,14 @@ let routers = createHashRouter([
         element: (
           <ProtectedRoute>
             <WaterColors />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "admin",
+        element: (
+          <ProtectedRoute>
+            <Admin/>
           </ProtectedRoute>
         ),
       },
